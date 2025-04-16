@@ -23,10 +23,11 @@ namespace TP.ConcurrentProgramming.PresentationView
     {
       Random random = new Random();
       InitializeComponent();
+      DataContext = new MainWindowViewModel();
       MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
       double screenWidth = SystemParameters.PrimaryScreenWidth;
       double screenHeight = SystemParameters.PrimaryScreenHeight;
-      viewModel.Start(random.Next(5, 10));
+      // viewModel.Start(random.Next(5, 10)); // uncomment to start the simulation automatically
     }
 
     /// <summary>

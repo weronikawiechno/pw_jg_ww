@@ -69,9 +69,15 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.MVVMLight
     /// to be passed, this parameter is always ignored</param>
     public virtual void Execute(object parameter)
     {
-      this.m_Execute();
+      try
+        {
+            this.m_Execute();
+        }
+      catch (Exception ex)
+        {
+            Console.WriteLine($"Error executing command: {ex.Message}");
+        }
     }
-
     /// <summary>
     /// Occurs when changes occur that affect whether the command should execute.
     /// </summary>
