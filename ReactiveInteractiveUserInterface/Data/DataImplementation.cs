@@ -118,13 +118,18 @@ namespace TP.ConcurrentProgramming.Data
             bool needsYBounce = false;
             
             //  X boundaries 
-            if (position.x < (_ballDiameter/2) || position.x > _width - (_ballDiameter/2))
+            // if (position.x < (_ballDiameter/2) || position.x > _width - (_ballDiameter/2))
+            //     needsXBounce = true;
+            if (position.x < 0 || position.x > _width)
                 needsXBounce = true;
                 
             //  Y boundaries 
-            if (position.y < (_ballDiameter/2) || position.y > _height - (_ballDiameter/2))
+            // if (position.y < (_ballDiameter/2) || position.y > _height - (_ballDiameter/2))
+            //     needsYBounce = true;
+            
+            
+            if (position.y < 0 || position.y > _height)
                 needsYBounce = true;
-                
             // velocity changes 
             if (needsXBounce)
                 item.Velocity = new Vector(1.0*(-velocity.x), 1.0*velocity.y); // it was very unrealistic when they bounced of with the same speed
