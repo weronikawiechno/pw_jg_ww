@@ -32,11 +32,23 @@ namespace TP.ConcurrentProgramming.Data
         throw new ObjectDisposedException(nameof(DataImplementation));
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
+        
+      BallsList.Clear();
+      
       Random random = new Random();
       for (int i = 0; i < numberOfBalls; i++)
       {
-        Vector startingPosition = new(random.Next(100, 400 - 100), random.Next(100, 400 - 100));
-        Ball newBall = new(startingPosition, startingPosition);
+        Vector startingPosition = new(
+            random.Next((int)_ballDiameter, (int)(_width - _ballDiameter)), 
+            random.Next((int)_ballDiameter, (int)(_height - _ballDiameter))
+        );
+        
+        Vector velocity = new(
+            (random.NextDouble() - 0.5) * 5,  
+            (random.NextDouble() - 0.5) * 5   
+        );
+        
+        Ball newBall = new(startingPosition, velocity);
         upperLayerHandler(startingPosition, newBall);
         BallsList.Add(newBall);
       }
@@ -63,7 +75,6 @@ namespace TP.ConcurrentProgramming.Data
 
     public override void Dispose()
     {
-      // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
       Dispose(disposing: true);
       GC.SuppressFinalize(this);
     }
@@ -72,17 +83,60 @@ namespace TP.ConcurrentProgramming.Data
 
     #region private
 
-    //private bool disposedValue;
     private bool Disposed = false;
 
     private readonly Timer MoveTimer;
     private Random RandomGenerator = new();
-    private List<Ball> BallsList = [];
+    private List<Ball> BallsList = new();
+
+    private double _width = 400;
+    private double _height = 400; 
+    private double _ballDiameter = 30;
+
+    public void UpdateBoundaries(double width, double height)
+    {
+      _width = width;
+      _height = height;
+    }
 
     private void Move(object? x)
     {
       foreach (Ball item in BallsList)
-        item.Move(new Vector((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10));
+      {
+        Vector velocity = (Vector)item.Velocity;
+        
+        item.Move(velocity);
+        
+       
+        object? positionObj = item.GetType().GetField("Position", 
+            System.Reflection.BindingFlags.NonPublic | 
+            System.Reflection.BindingFlags.Instance)?.GetValue(item);
+            
+        if (positionObj is Vector position)
+        {
+            bool needsXBounce = false;
+            bool needsYBounce = false;
+            
+            //  X boundaries 
+            if (position.x < (_ballDiameter/2) || position.x > _width - (_ballDiameter/2))
+                needsXBounce = true;
+                
+            //  Y boundaries 
+            if (position.y < (_ballDiameter/2) || position.y > _height - (_ballDiameter/2))
+                needsYBounce = true;
+                
+            // velocity changes 
+            if (needsXBounce)
+                item.Velocity = new Vector(1.5*(-velocity.x), 1.5*velocity.y); // it was very unrealistic when they bounced of with the same speed
+                
+            if (needsYBounce)
+                item.Velocity = new Vector(1.5*velocity.x, 1.5*(-velocity.y));
+        }
+        else
+        {
+            double bounceProbability = 0;
+        }
+      }
     }
 
     #endregion private
