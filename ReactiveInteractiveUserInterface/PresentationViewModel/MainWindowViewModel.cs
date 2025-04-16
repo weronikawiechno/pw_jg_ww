@@ -32,6 +32,10 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
         {
             StartCommand = new RelayCommand(() => Start(NumberOfBalls));
             ModelLayer = ModelAbstractApi.CreateModel();
+            
+            // Initialize with default size if needed
+            UpdateTableSize(800, 600);
+            
             Observer = ModelLayer.Subscribe(ball => 
             {
                 Balls.Add(ball);
@@ -50,13 +54,33 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
 
         public void Start(int numberOfBalls)
         {
-            Console.WriteLine("MainWindowViewModel Start called.");
             if (Disposed)
                 throw new ObjectDisposedException(nameof(MainWindowViewModel));
             Balls.Clear(); // Clear the collection before starting - but if we want the functionality of adding new balls, we can remove this line.
             ModelLayer.Start(numberOfBalls);
         }
-        
+
+        private double _tableWidth;
+        private double _tableHeight;
+
+        public void UpdateTableSize(double width, double height)
+        {
+            // Store the new dimensions
+            _tableWidth = width;
+            _tableHeight = height;
+            
+            // If your model has the capability to update boundaries, call it
+            // If ModelLayer.UpdateBoundaries doesn't exist, you'll need a workaround
+            try {
+                // Try to use reflection to call the method if it exists
+                var methodInfo = ModelLayer.GetType().GetMethod("UpdateBoundaries");
+                if (methodInfo != null)
+                    methodInfo.Invoke(ModelLayer, new object[] { width, height });
+            }
+            catch {
+                // Ignore if the method doesn't exist
+            }
+        }
 
         public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
 

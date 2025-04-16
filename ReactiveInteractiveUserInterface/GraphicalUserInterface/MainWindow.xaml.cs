@@ -19,7 +19,6 @@ namespace TP.ConcurrentProgramming.PresentationView
   public partial class MainWindow : Window
   {
     public MainWindow()
-    
     {
       Random random = new Random();
       InitializeComponent();
@@ -27,7 +26,16 @@ namespace TP.ConcurrentProgramming.PresentationView
       MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
       double screenWidth = SystemParameters.PrimaryScreenWidth;
       double screenHeight = SystemParameters.PrimaryScreenHeight;
-      // viewModel.Start(random.Next(5, 10)); // uncomment to start the simulation automatically
+      
+      this.SizeChanged += MainWindow_SizeChanged;
+    }
+
+    private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+      if (DataContext is MainWindowViewModel viewModel && Table != null)
+      {
+        viewModel.UpdateTableSize(Table.ActualWidth, Table.ActualHeight);
+      }
     }
 
     /// <summary>

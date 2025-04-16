@@ -14,20 +14,26 @@
     </Window.DataContext>
 
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Button Content="Start Simulation" Width="150" Height="30" Margin="5"
-                    Command="{Binding StartCommand}" />
-                    
-            <TextBox Width="150" Height="30" Margin="5"
-                    Text="{Binding NumberOfBalls, UpdateSourceTrigger=PropertyChanged}" />
-                    
-            <TextBlock Text="{Binding NumberOfBalls, StringFormat='Liczba kul na stole: {0}'}" 
-                    Width="200" Height="30" Margin="5"
-                    HorizontalAlignment="Center" VerticalAlignment="Top" 
-                    Foreground="Green" FontWeight="Bold" />
-        </StackPanel>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     
-        <Border x:Name="Table" BorderThickness="4" BorderBrush="Green">
+    <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Button Content="Start Simulation" Width="150" Height="30" Margin="5"
+                Command="{Binding StartCommand}" />
+                
+        <TextBox Width="150" Height="30" Margin="5"
+                Text="{Binding NumberOfBalls, UpdateSourceTrigger=PropertyChanged}" />
+                
+        <TextBlock Text="{Binding NumberOfBalls, StringFormat='Liczba kul na stole: {0}'}" 
+                Width="200" Height="30" Margin="5"
+                HorizontalAlignment="Center" VerticalAlignment="Top" 
+                Foreground="Green" FontWeight="Bold" />
+    </StackPanel>
+
+    <Border Grid.Row="1" x:Name="Table" BorderThickness="4" BorderBrush="Green" ClipToBounds="True">
+        <Canvas ClipToBounds="True">
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -41,11 +47,18 @@
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
                         <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <RotateTransform Angle="{Binding Angle}" />
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>
-        </Border>
-    </Grid>
+        </Canvas>
+    </Border>
+</Grid>
 </Window>
