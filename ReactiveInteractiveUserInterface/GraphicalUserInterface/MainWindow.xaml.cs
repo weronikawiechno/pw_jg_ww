@@ -1,4 +1,4 @@
-﻿//__________________________________________________________________________________________
+﻿﻿//__________________________________________________________________________________________
 //
 //  Copyright 2024 Mariusz Postol LODZ POLAND.
 //
@@ -20,22 +20,8 @@ namespace TP.ConcurrentProgramming.PresentationView
   {
     public MainWindow()
     {
-      Random random = new Random();
       InitializeComponent();
       DataContext = new MainWindowViewModel();
-      MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
-      double screenWidth = SystemParameters.PrimaryScreenWidth;
-      double screenHeight = SystemParameters.PrimaryScreenHeight;
-      
-      this.SizeChanged += MainWindow_SizeChanged;
-    }
-
-    private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-      if (DataContext is MainWindowViewModel viewModel && Table != null)
-      {
-        viewModel.UpdateTableSize(Table.ActualWidth, Table.ActualHeight);
-      }
     }
 
     /// <summary>

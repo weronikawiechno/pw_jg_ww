@@ -127,10 +127,10 @@ namespace TP.ConcurrentProgramming.Data
                 
             // velocity changes 
             if (needsXBounce)
-                item.Velocity = new Vector(1.5*(-velocity.x), 1.5*velocity.y); // it was very unrealistic when they bounced of with the same speed
+                item.Velocity = new Vector(1.0*(-velocity.x), 1.0*velocity.y); // it was very unrealistic when they bounced of with the same speed
                 
             if (needsYBounce)
-                item.Velocity = new Vector(1.5*velocity.x, 1.5*(-velocity.y));
+                item.Velocity = new Vector(1.0*velocity.x, 1.0*(-velocity.y));
         }
         else
         {
