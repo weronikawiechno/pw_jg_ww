@@ -176,24 +176,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\vervi\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\jakgo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "4.2.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\GraphicalUserInterface\\PresentationView.csproj",
+      "projectUniqueName": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\graphicaluserinterface\\PresentationView.csproj",
       "projectName": "TP.ConcurrentProgramming.PresentationView",
-      "projectPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\GraphicalUserInterface\\PresentationView.csproj",
-      "packagesPath": "C:\\Users\\vervi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\GraphicalUserInterface\\obj\\",
+      "projectPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\graphicaluserinterface\\PresentationView.csproj",
+      "packagesPath": "C:\\Users\\jakgo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\graphicaluserinterface\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\vervi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+        "C:\\Users\\jakgo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows7.0"
@@ -205,8 +200,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows7.0",
           "projectReferences": {
-            "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\PresentationViewModel\\PresentationViewModel.csproj": {
-              "projectPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\PresentationViewModel\\PresentationViewModel.csproj"
+            "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\PresentationViewModel\\PresentationViewModel.csproj": {
+              "projectPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\PresentationViewModel\\PresentationViewModel.csproj"
             }
           }
         }
@@ -243,24 +238,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
