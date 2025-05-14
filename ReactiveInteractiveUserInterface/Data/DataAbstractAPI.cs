@@ -34,6 +34,9 @@ namespace TP.ConcurrentProgramming.Data
     #endregion IDisposable
 
     #region private
+    
+     public abstract void Stop();
+   
 
     private static Lazy<DataAbstractAPI> modelInstance = new Lazy<DataAbstractAPI>(() => new DataImplementation());
 

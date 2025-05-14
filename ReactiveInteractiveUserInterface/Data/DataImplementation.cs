@@ -1,132 +1,114 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
+using System.Threading;
 
 namespace TP.ConcurrentProgramming.Data
 {
     internal class DataImplementation : DataAbstractAPI
     {
-        #region ctor
-
-        public DataImplementation()
-        {
-            MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
-        }
-
-        #endregion ctor
-
-        #region DataAbstractAPI
+        private readonly object _ballsLock = new object(); // Synchronizacja wątkóws
+        private readonly List<Thread> _threads = new List<Thread>();
+        private readonly List<Ball> BallsList = new List<Ball>();
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private bool _isRunning = false;
 
         public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
         {
-            if (Disposed)
-                throw new ObjectDisposedException(nameof(DataImplementation));
-            if (upperLayerHandler == null)
-                throw new ArgumentNullException(nameof(upperLayerHandler));
+            if (_isRunning) return;
 
-            BallsList.Clear();
-
+            _isRunning = true;
             Random random = new Random();
+
             for (int i = 0; i < numberOfBalls; i++)
             {
-                Vector startingPosition = new(
-                    random.Next((int)_ballDiameter, (int)(_width - _ballDiameter)),
-                    random.Next((int)_ballDiameter, (int)(_height - _ballDiameter))
+                Vector startingPosition = new Vector(
+                    random.Next(30, 400 - 30),
+                    random.Next(30, 400 - 30)
                 );
-
-                Vector velocity = new(
+                Vector velocity = new Vector(
                     (random.NextDouble() - 0.5) * 5,
                     (random.NextDouble() - 0.5) * 5
                 );
 
-                Ball newBall = new(startingPosition, velocity);
+                Ball newBall = new Ball(startingPosition, velocity);
+                lock (_ballsLock)
+                {
+                    BallsList.Add(newBall);
+                }
                 upperLayerHandler(startingPosition, newBall);
-                BallsList.Add(newBall);
+
+                var thread = new Thread(() => BallThreadLoop(newBall, _cts.Token));
+                _threads.Add(thread);
+                thread.Start();
             }
         }
 
-        #endregion DataAbstractAPI
-
-        #region IDisposable
-
-        protected virtual void Dispose(bool disposing)
+        private void BallThreadLoop(Ball ball, CancellationToken token)
         {
-            if (!Disposed)
+            while (!token.IsCancellationRequested)
             {
-                if (disposing)
+                lock (_ballsLock) // Synchronizacja dostępu do zasobów współdzielonych
                 {
-                    MoveTimer.Dispose();
-                    BallsList.Clear();
+                    ball.Move();
+                    HandleCollisions(ball);
                 }
-                Disposed = true;
+                Thread.Sleep(20); // Zabezpieczenie przed nadmiernym zużyciem CPU
             }
-            else
-                throw new ObjectDisposedException(nameof(DataImplementation));
+            Debug.WriteLine("Thread over");
+        }
+
+        private void HandleCollisions(Ball ball)
+        {
+            foreach (var other in BallsList)
+            {
+                if (ball != other)
+                {
+                    ball.ResolveCollision(other);
+                }
+            }
+
+            Vector position = ball.GetPosition();
+            if (position.x < 0 || position.x > 400)
+            {
+                ball.Velocity = new Vector(-ball.Velocity.x, ball.Velocity.y);
+            }
+
+            if (position.y < 0 || position.y > 400)
+            {
+                ball.Velocity = new Vector(ball.Velocity.x, -ball.Velocity.y);
+            }
+        }
+
+        public override void Stop()
+        {
+            _cts.Cancel(); // Zatrzymanie wątków
+
+            // Czekaj na zakończenie wszystkich wątków
+            foreach (var thread in _threads)
+            {
+                thread.Join();
+            }
+            _threads.Clear();
+
+            lock (_ballsLock)
+            {
+                BallsList.Clear();
+            }
+
+            // Resetowanie CancellationTokenSource dla potencjalnego przyszłego użycia
+            _cts.Dispose();
+            _cts = new CancellationTokenSource();
         }
 
         public override void Dispose()
         {
-            Dispose(disposing: true);
+            Stop();
+            lock (_ballsLock)
+            {
+                BallsList.Clear();
+            }
             GC.SuppressFinalize(this);
         }
-
-        #endregion IDisposable
-
-        #region private
-
-        private bool Disposed = false;
-
-        private readonly Timer MoveTimer;
-        private readonly ConcurrentBag<Ball> BallsList = new(); // Thread-safe collection
-
-        private double _width = 400;
-        private double _height = 400;
-        private double _ballDiameter = 30;
-
-        public void UpdateBoundaries(double width, double height)
-        {
-            _width = width;
-            _height = height;
-        }
-
-        private void Move(object? x)
-        {
-            Parallel.ForEach(BallsList, item =>
-            {
-                // Since Ball.Move expects a Vector, cast or convert IVector
-                item.Move((Vector)item.Velocity);
-
-                foreach (var other in BallsList)
-                {
-                    if (item != other)
-                    {
-                        item.ResolveCollision(other);
-                    }
-                }
-
-                LockAndHandleWallCollision(item);
-            });
-        }
-
-        private void LockAndHandleWallCollision(Ball ball)
-        {
-            lock (ball)
-            {
-                Vector position = ball.GetPosition();
-
-                if (position.x < 0 || position.x > _width)
-                {
-                    ball.Velocity = new Vector(-ball.Velocity.x, ball.Velocity.y);
-                }
-
-                if (position.y < 0 || position.y > _height)
-                {
-                    ball.Velocity = new Vector(ball.Velocity.x, -ball.Velocity.y);
-                }
-            }
-        }
-
-        #endregion private
     }
 }
