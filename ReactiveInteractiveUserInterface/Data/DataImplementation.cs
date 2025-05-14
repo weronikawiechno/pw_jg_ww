@@ -12,6 +12,7 @@ namespace TP.ConcurrentProgramming.Data
         private readonly List<Ball> BallsList = new List<Ball>();
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _isRunning = false;
+        private Timer _collisionTimer;
 
         public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
         {
@@ -42,41 +43,40 @@ namespace TP.ConcurrentProgramming.Data
                 _threads.Add(thread);
                 thread.Start();
             }
+
+            _collisionTimer = new Timer(_ => HandleCollisions(), null, 0, 20);
         }
 
         private void BallThreadLoop(Ball ball, CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
-                lock (_ballsLock) // Synchronizacja dostępu do zasobów współdzielonych
+                lock (_ballsLock)
                 {
                     ball.Move();
-                    HandleCollisions(ball);
                 }
-                Thread.Sleep(20); // Zabezpieczenie przed nadmiernym zużyciem CPU
+                Thread.Sleep(20);
             }
             Debug.WriteLine("Thread over");
         }
 
-        private void HandleCollisions(Ball ball)
+        private void HandleCollisions()
         {
-            foreach (var other in BallsList)
+            var balls = GetBallsSnapshot();
+            foreach (var ball in balls)
             {
-                if (ball != other)
+                foreach (var other in balls)
                 {
-                    ball.ResolveCollision(other);
+                    if (ball != other)
+                    {
+                        // Move collision logic here (from old DataImplementation.HandleCollisions)
+                        // ball.ResolveCollision(other);
+                    }
                 }
-            }
-
-            Vector position = ball.GetPosition();
-            if (position.x < 0 || position.x > 400)
-            {
-                ball.Velocity = new Vector(-ball.Velocity.x, ball.Velocity.y);
-            }
-
-            if (position.y < 0 || position.y > 400)
-            {
-                ball.Velocity = new Vector(ball.Velocity.x, -ball.Velocity.y);
+                // Wall bounce logic here
+                // var position = ball.GetPosition();
+                // if (position.x < 0 || position.x > 400) ...
+                // if (position.y < 0 || position.y > 400) ...
             }
         }
 
@@ -99,6 +99,8 @@ namespace TP.ConcurrentProgramming.Data
             // Resetowanie CancellationTokenSource dla potencjalnego przyszłego użycia
             _cts.Dispose();
             _cts = new CancellationTokenSource();
+
+            _collisionTimer?.Dispose();
         }
 
         public override void Dispose()
@@ -109,6 +111,14 @@ namespace TP.ConcurrentProgramming.Data
                 BallsList.Clear();
             }
             GC.SuppressFinalize(this);
+        }
+
+        internal List<Ball> GetBallsSnapshot()
+        {
+            lock (_ballsLock)
+            {
+                return new List<Ball>(BallsList);
+            }
         }
     }
 }
