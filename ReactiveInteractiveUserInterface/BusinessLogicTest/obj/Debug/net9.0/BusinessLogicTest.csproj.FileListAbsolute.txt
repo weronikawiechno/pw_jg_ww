@@ -1,0 +1,8 @@
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\bin\Debug\net9.0\.msCoverageSourceRootsMapping_BusinessLogicTest
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\bin\Debug\net9.0\CoverletSourceRootsMapping_BusinessLogicTest
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.csproj.AssemblyReference.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.AssemblyInfoInputs.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.AssemblyInfo.cs
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.csproj.CoreCompileInputs.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\BusinessLogicTest\obj\Debug\net9.0\BusinessLogicTest.sourcelink.json

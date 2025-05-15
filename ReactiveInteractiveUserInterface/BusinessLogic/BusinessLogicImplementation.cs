@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using TP.ConcurrentProgramming.Data;
-
+using TP.ConcurrentProgramming.BusinessLogic;
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class BusinessLogicImplementation : BusinessLogicAbstractAPI
@@ -30,29 +30,38 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             if (_isRunning) return;
             _isRunning = true;
-            
+
+            var balls = new List<Ball>();
+
             _dataLayer.Start(numberOfBalls, (vector, dataBall) =>
             {
-                var businessBall = new BusinessBall(dataBall);
-                
+                Ball ball = new Ball(dataBall);
+                balls.Add(ball);
+
                 IPosition position = new Position(vector.x, vector.y);
-                
-                handler(position, businessBall);
-                
-                var thread = new Thread(() => BallThreadLoop(businessBall, _cts.Token));
+
+                handler(position, ball);
+
+                var thread = new Thread(() => BallThreadLoop(ball, _cts.Token));
                 _threads.Add(thread);
                 thread.Start();
             });
+
+            
+            foreach (var ball in balls)
+            {
+                ball.SetOtherBalls(balls);
+            }
         }
 
         private void BallThreadLoop(IBall ball, CancellationToken token)
         {
-            Data.IBall dataBall = ((BusinessBall)ball).GetDataBall();
-            
+            Data.IBall dataBall = ((Ball)ball).DataBall;
+
             while (!token.IsCancellationRequested)
             {
                 _dataLayer.MoveBall(dataBall);
-                
+
                 Thread.Sleep(20);
             }
         }
@@ -61,7 +70,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             _cts.Cancel();
             
-            // Wait for all threads to finish
             foreach (var thread in _threads)
             {
                 thread.Join();
@@ -72,12 +80,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             _cts = new CancellationTokenSource();
             
             _isRunning = false;
-            
-            // Tell the data layer to stop
+
             _dataLayer.Stop();
         }
 
-        // Dispose method
         public override void Dispose()
         {
             Stop();

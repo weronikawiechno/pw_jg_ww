@@ -35,7 +35,7 @@ namespace TP.ConcurrentProgramming.Data
                     BallsList.Add(newBall);
                 }
                 
-                // Notify the business layer about the new ball
+                
                 upperLayerHandler(startingPosition, newBall);
             }
         }
@@ -44,39 +44,10 @@ namespace TP.ConcurrentProgramming.Data
         {
             lock (_ballsLock)
             {
-                // Cast to our internal ball type
-                Ball internalBall = ball as Ball;
-                if (internalBall == null) return;
-                
-                // Move the ball
-                internalBall.Move();
-                
-                // Handle collisions
-                HandleCollisions(internalBall);
-            }
-        }
-
-        private void HandleCollisions(Ball ball)
-        {
-            // Ball-to-ball collisions
-            foreach (var other in BallsList)
-            {
-                if (ball != other)
+                if (ball is Ball internalBall)
                 {
-                    ball.ResolveCollision(other);
+                    internalBall.Move();
                 }
-            }
-
-            // Boundary collisions
-            Vector position = ball.GetPosition();
-            if (position.x < 0 || position.x > 400)
-            {
-                ball.Velocity = new Vector(-ball.Velocity.x, ball.Velocity.y);
-            }
-
-            if (position.y < 0 || position.y > 400)
-            {
-                ball.Velocity = new Vector(ball.Velocity.x, -ball.Velocity.y);
             }
         }
 
