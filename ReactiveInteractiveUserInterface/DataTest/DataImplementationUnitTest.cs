@@ -65,5 +65,89 @@ namespace TP.ConcurrentProgramming.Data.Test
         newInstance.CheckNumberOfBalls(x => Assert.AreEqual<int>(10, x));
       }
     }
+
+    [TestMethod]
+    public void MoveBallTestMethod()
+    {
+      using (DataImplementation newInstance = new DataImplementation())
+      {
+        int numberOfBalls2Create = 10;
+        newInstance.Start(
+          numberOfBalls2Create,
+          (startingPosition, ball) =>
+          {
+            Assert.IsTrue(startingPosition.x >= 0);
+            Assert.IsTrue(startingPosition.y >= 0);
+            Assert.IsNotNull(ball);
+          });
+        IEnumerable<IBall>? ballsList = null;
+        newInstance.CheckBallsList(x => ballsList = x);
+        Assert.IsNotNull(ballsList);
+        foreach (IBall ball in ballsList)
+        {
+          IVector initialPosition = ball.Position;
+          IVector initialVelocity = ball.Velocity;
+          newInstance.MoveBall(ball);
+          Assert.AreEqual<IVector>(initialPosition, ball.Position);
+          Assert.AreEqual<IVector>(initialVelocity, ball.Velocity);
+        }
+      }
+    }
+    [TestMethod]
+    public void StopTestMethod()
+    {
+      using (DataImplementation newInstance = new DataImplementation())
+      {
+        int numberOfBalls2Create = 10;
+        newInstance.Start(
+          numberOfBalls2Create,
+          (startingPosition, ball) =>
+          {
+            Assert.IsTrue(startingPosition.x >= 0);
+            Assert.IsTrue(startingPosition.y >= 0);
+            Assert.IsNotNull(ball);
+          });
+        IEnumerable<IBall>? ballsList = null;
+        newInstance.CheckBallsList(x => ballsList = x);
+        Assert.IsNotNull(ballsList);
+        newInstance.Stop();
+        newInstance.CheckNumberOfBalls(x => Assert.AreEqual<int>(0, x));
+      }
+    }
+    [TestMethod]
+    public void CheckBallsListTestMethod()
+    {
+      using (DataImplementation newInstance = new DataImplementation())
+      {
+        IEnumerable<IBall>? ballsList = null;
+        newInstance.CheckBallsList(x => ballsList = x);
+        Assert.IsNotNull(ballsList);
+        Assert.AreEqual<int>(0, ballsList.Count());
+      }
+    }
+    [TestMethod]
+    public void CheckNumberOfBallsTestMethod()
+    {
+      using (DataImplementation newInstance = new DataImplementation())
+      {
+        int numberOfBalls = 0;
+        newInstance.CheckNumberOfBalls(x => numberOfBalls = x);
+        Assert.AreEqual<int>(0, numberOfBalls);
+      }
+    }
+    [TestMethod]
+    public void CheckObjectDisposedTestMethod()
+    {
+      using (DataImplementation newInstance = new DataImplementation())
+      {
+        bool newInstanceDisposed = false;
+        newInstance.CheckObjectDisposed(x => newInstanceDisposed = x);
+        Assert.IsFalse(newInstanceDisposed);
+        newInstance.Dispose();
+        newInstance.CheckObjectDisposed(x => newInstanceDisposed = x);
+        Assert.IsTrue(newInstanceDisposed);
+      }
+    }
+    
   }
 }

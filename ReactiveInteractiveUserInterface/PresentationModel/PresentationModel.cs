@@ -29,6 +29,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
       eventObservable = Observable.FromEventPattern<BallChaneEventArgs>(this, "BallChanged");
     }
 
+    
     #region ModelAbstractApi
 
     public override void Dispose()

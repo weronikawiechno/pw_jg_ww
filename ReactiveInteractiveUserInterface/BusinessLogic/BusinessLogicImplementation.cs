@@ -7,63 +7,81 @@
 //  https://github.com/mpostol/TP/discussions/182
 //
 //_____________________________________________________________________________________________________________________________________
-
-using System.Diagnostics;
-using UnderneathLayerAPI = TP.ConcurrentProgramming.Data.DataAbstractAPI;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
-  internal class BusinessLogicImplementation : BusinessLogicAbstractAPI
-  {
-    #region ctor
-
-    public BusinessLogicImplementation() : this(null)
-    { }
-
-    internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
+    internal class BusinessLogicImplementation : BusinessLogicAbstractAPI
     {
-      layerBellow = underneathLayer == null ? UnderneathLayerAPI.GetDataLayer() : underneathLayer;
+        private readonly DataAbstractAPI _dataLayer;
+        private readonly List<Thread> _threads = new List<Thread>();
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private bool _isRunning = false;
+
+        public BusinessLogicImplementation(DataAbstractAPI dataLayer)
+        {
+            _dataLayer = dataLayer;
+        }
+
+        public override void Start(int numberOfBalls, Action<IPosition, IBall> handler)
+        {
+            if (_isRunning) return;
+            _isRunning = true;
+            
+            _dataLayer.Start(numberOfBalls, (vector, dataBall) =>
+            {
+                var businessBall = new BusinessBall(dataBall);
+                
+                IPosition position = new Position(vector.x, vector.y);
+                
+                handler(position, businessBall);
+                
+                var thread = new Thread(() => BallThreadLoop(businessBall, _cts.Token));
+                _threads.Add(thread);
+                thread.Start();
+            });
+        }
+
+        private void BallThreadLoop(IBall ball, CancellationToken token)
+        {
+            Data.IBall dataBall = ((BusinessBall)ball).GetDataBall();
+            
+            while (!token.IsCancellationRequested)
+            {
+                _dataLayer.MoveBall(dataBall);
+                
+                Thread.Sleep(20);
+            }
+        }
+
+        public override void Stop()
+        {
+            _cts.Cancel();
+            
+            // Wait for all threads to finish
+            foreach (var thread in _threads)
+            {
+                thread.Join();
+            }
+            _threads.Clear();
+            
+            _cts.Dispose();
+            _cts = new CancellationTokenSource();
+            
+            _isRunning = false;
+            
+            // Tell the data layer to stop
+            _dataLayer.Stop();
+        }
+
+        // Dispose method
+        public override void Dispose()
+        {
+            Stop();
+            _cts.Dispose();
+        }
     }
-
-    #endregion ctor
-
-    #region BusinessLogicAbstractAPI
-
-    public override void Dispose()
-    {
-      if (Disposed)
-        throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
-      layerBellow.Dispose();
-      Disposed = true;
-    }
-
-    public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler)
-    {
-      if (Disposed)
-        throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
-      if (upperLayerHandler == null)
-        throw new ArgumentNullException(nameof(upperLayerHandler));
-      layerBellow.Start(numberOfBalls, (startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.x), new Ball(databall)));
-    }
-
-    #endregion BusinessLogicAbstractAPI
-
-    #region private
-
-    private bool Disposed = false;
-
-    private readonly UnderneathLayerAPI layerBellow;
-
-    #endregion private
-
-    #region TestingInfrastructure
-
-    [Conditional("DEBUG")]
-    internal void CheckObjectDisposed(Action<bool> returnInstanceDisposed)
-    {
-      returnInstanceDisposed(Disposed);
-    }
-
-    #endregion TestingInfrastructure
-  }
 }

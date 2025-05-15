@@ -32,5 +32,31 @@ namespace TP.ConcurrentProgramming.Data.Test
       Assert.AreEqual<int>(1, numberOfCallBackCalled);
       Assert.AreEqual<IVector>(initialPosition, curentPosition);
     }
+
+    [TestMethod]
+    public void MoveTestMethod2()
+    {
+      Vector initialPosition = new(10.0, 10.0);
+      Ball newInstance = new(initialPosition, new Vector(0.0, 0.0));
+      IVector curentPosition = new Vector(0.0, 0.0);
+      int numberOfCallBackCalled = 0;
+      newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); curentPosition = position; numberOfCallBackCalled++; };
+      newInstance.Move(new Vector(1.0, 1.0));
+      Assert.AreEqual<int>(1, numberOfCallBackCalled);
+      Assert.AreEqual<IVector>(new Vector(11.0, 11.0), curentPosition);
+    }
+    
+    [TestMethod]
+    public void MoveTestMethod3()
+    {
+      Vector initialPosition = new(10.0, 10.0);
+      Ball newInstance = new(initialPosition, new Vector(1.0, 1.0));
+      IVector curentPosition = new Vector(0.0, 0.0);
+      int numberOfCallBackCalled = 0;
+      newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); curentPosition = position; numberOfCallBackCalled++; };
+      newInstance.Move(new Vector(1.0, 1.0));
+      Assert.AreEqual<int>(1, numberOfCallBackCalled);
+      Assert.AreEqual<IVector>(new Vector(12.0, 12.0), curentPosition);
+    }
   }
 }

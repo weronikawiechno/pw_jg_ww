@@ -23,5 +23,6 @@ namespace TP.ConcurrentProgramming.Data.Test
       Assert.AreEqual<double>(XComponent, newInstance.x);
       Assert.AreEqual<double>(YComponent, newInstance.y);
     }
+    [TestMethod]
   }
 }

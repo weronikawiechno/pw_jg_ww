@@ -8,6 +8,9 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using System;
+using TP.ConcurrentProgramming.Data;
+
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
   internal class Ball : IBall
@@ -31,5 +34,28 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     }
 
     #endregion private
+  }
+
+  internal class BusinessBall : IBall
+  {
+    private readonly Data.IBall _dataBall;
+        
+    public event EventHandler<IPosition>? NewPositionNotification;
+        
+    public BusinessBall(Data.IBall dataBall)
+    {
+      _dataBall = dataBall;
+      _dataBall.NewPositionNotification += OnDataBallPositionChanged;
+    }
+        
+    private void OnDataBallPositionChanged(object? sender, IVector vector)
+    {
+      NewPositionNotification?.Invoke(this, new Position(vector.x, vector.y));
+    }
+        
+    public Data.IBall GetDataBall()
+    {
+      return _dataBall;
+    }
   }
 }

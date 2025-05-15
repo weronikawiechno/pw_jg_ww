@@ -74,19 +74,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jakgo\\.nuget\\packages\\": {}
+    "C:\\Users\\vervi\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\BusinessLogic\\BusinessLogic.csproj",
+      "projectUniqueName": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\BusinessLogic\\BusinessLogic.csproj",
       "projectName": "TP.ConcurrentProgramming.BusinessLogic",
-      "projectPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\BusinessLogic\\BusinessLogic.csproj",
-      "packagesPath": "C:\\Users\\jakgo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\BusinessLogic\\obj\\",
+      "projectPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\BusinessLogic\\BusinessLogic.csproj",
+      "packagesPath": "C:\\Users\\vervi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\BusinessLogic\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\jakgo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\vervi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -98,8 +103,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\Data\\Data.csproj": {
-              "projectPath": "C:\\Users\\jakgo\\Desktop\\SEMESTR4\\wbud\\pw_jg_ww\\reactiveinteractiveuserinterface\\Data\\Data.csproj"
+            "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\Data\\Data.csproj": {
+              "projectPath": "C:\\Users\\vervi\\Desktop\\4 semestr\\współbiegi\\pw_jg_ww\\ReactiveInteractiveUserInterface\\Data\\Data.csproj"
             }
           }
         }
@@ -136,12 +141,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.16, 8.0.16]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.16, 8.0.16]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.16, 8.0.16]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

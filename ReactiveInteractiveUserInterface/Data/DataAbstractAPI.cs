@@ -8,6 +8,8 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using System;
+
 namespace TP.ConcurrentProgramming.Data
 {
   public abstract class DataAbstractAPI : IDisposable
@@ -19,6 +21,11 @@ namespace TP.ConcurrentProgramming.Data
       return modelInstance.Value;
     }
 
+    public static DataAbstractAPI CreateApi()
+    {
+      return new DataImplementation();
+    }
+
     #endregion Layer Factory
 
     #region public API
@@ -28,6 +35,8 @@ namespace TP.ConcurrentProgramming.Data
     #endregion public API
 
     #region IDisposable
+
+    public abstract void MoveBall(IBall ball);
 
     public abstract void Dispose();
 

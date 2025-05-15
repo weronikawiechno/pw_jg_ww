@@ -1,4 +1,7 @@
-﻿//____________________________________________________________________________________________________________________________________
+﻿using System;
+using TP.ConcurrentProgramming.Data; 
+
+//____________________________________________________________________________________________________________________________________
 //
 //  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
 //
@@ -26,8 +29,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     public static readonly Dimensions GetDimensions = new(10.0, 10.0, 10.0);
 
     public abstract void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler);
+    public abstract void Stop();
 
     #region IDisposable
+
+    
 
     public abstract void Dispose();
 
@@ -37,8 +43,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     #region private
 
-    private static Lazy<BusinessLogicAbstractAPI> modelInstance = new Lazy<BusinessLogicAbstractAPI>(() => new BusinessLogicImplementation());
-
+    private static Lazy<BusinessLogicAbstractAPI> modelInstance = new Lazy<BusinessLogicAbstractAPI>(() => 
+        new BusinessLogicImplementation(DataAbstractAPI.CreateApi()));
     #endregion private
   }
   /// <summary>

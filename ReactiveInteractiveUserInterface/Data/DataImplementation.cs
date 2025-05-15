@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 
 namespace TP.ConcurrentProgramming.Data
 {
     internal class DataImplementation : DataAbstractAPI
     {
-        private readonly object _ballsLock = new object(); // Synchronizacja wątkóws
-        private readonly List<Thread> _threads = new List<Thread>();
+        private readonly object _ballsLock = new object();
         private readonly List<Ball> BallsList = new List<Ball>();
-        private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _isRunning = false;
 
         public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
         {
             if (_isRunning) return;
-
             _isRunning = true;
+            
             Random random = new Random();
-
+            
             for (int i = 0; i < numberOfBalls; i++)
             {
                 Vector startingPosition = new Vector(
@@ -32,34 +29,36 @@ namespace TP.ConcurrentProgramming.Data
                 );
 
                 Ball newBall = new Ball(startingPosition, velocity);
+                
                 lock (_ballsLock)
                 {
                     BallsList.Add(newBall);
                 }
+                
+                // Notify the business layer about the new ball
                 upperLayerHandler(startingPosition, newBall);
-
-                var thread = new Thread(() => BallThreadLoop(newBall, _cts.Token));
-                _threads.Add(thread);
-                thread.Start();
             }
         }
 
-        private void BallThreadLoop(Ball ball, CancellationToken token)
+        public override void MoveBall(IBall ball)
         {
-            while (!token.IsCancellationRequested)
+            lock (_ballsLock)
             {
-                lock (_ballsLock) // Synchronizacja dostępu do zasobów współdzielonych
-                {
-                    ball.Move();
-                    HandleCollisions(ball);
-                }
-                Thread.Sleep(20); // Zabezpieczenie przed nadmiernym zużyciem CPU
+                // Cast to our internal ball type
+                Ball internalBall = ball as Ball;
+                if (internalBall == null) return;
+                
+                // Move the ball
+                internalBall.Move();
+                
+                // Handle collisions
+                HandleCollisions(internalBall);
             }
-            Debug.WriteLine("Thread over");
         }
 
         private void HandleCollisions(Ball ball)
         {
+            // Ball-to-ball collisions
             foreach (var other in BallsList)
             {
                 if (ball != other)
@@ -68,6 +67,7 @@ namespace TP.ConcurrentProgramming.Data
                 }
             }
 
+            // Boundary collisions
             Vector position = ball.GetPosition();
             if (position.x < 0 || position.x > 400)
             {
@@ -82,32 +82,16 @@ namespace TP.ConcurrentProgramming.Data
 
         public override void Stop()
         {
-            _cts.Cancel(); // Zatrzymanie wątków
-
-            // Czekaj na zakończenie wszystkich wątków
-            foreach (var thread in _threads)
-            {
-                thread.Join();
-            }
-            _threads.Clear();
-
             lock (_ballsLock)
             {
                 BallsList.Clear();
             }
-
-            // Resetowanie CancellationTokenSource dla potencjalnego przyszłego użycia
-            _cts.Dispose();
-            _cts = new CancellationTokenSource();
+            _isRunning = false;
         }
 
         public override void Dispose()
         {
             Stop();
-            lock (_ballsLock)
-            {
-                BallsList.Clear();
-            }
             GC.SuppressFinalize(this);
         }
     }
