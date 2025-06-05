@@ -1,0 +1,14 @@
+=== Diagnostics Log Started ===
+Time: 05.06.2025 05:15:21
+{"Timestamp":"2025-06-05T05:15:28.0072069+02:00","ElapsedTime":1.83E-05,"BallId":42931033,"Position":{"X":35.002533778665246,"Y":238.9989334642203},"Velocity":{"X":2.324567328140967,"Y":-1.0765730744425435},"RealTimeMetrics":{"FrameTime":1.83E-05,"IsRealTime":true,"ThreadId":15}}
+{"Timestamp":"2025-06-05T05:15:27.9977584+02:00","ElapsedTime":1.11E-05,"BallId":39086322,"Position":{"X":33.0013579885764,"Y":303.99971902274467},"Velocity":{"X":2.2262106445027716,"Y":-0.5587184171270212},"RealTimeMetrics":{"FrameTime":1.11E-05,"IsRealTime":true,"ThreadId":11}}
+{"Timestamp":"2025-06-05T05:15:27.9972903+02:00","ElapsedTime":0.0001089,"BallId":12036987,"Position":{"X":176.99965050508715,"Y":65.00222015939208},"Velocity":{"X":-0.3236063656551161,"Y":1.957602928333416},"RealTimeMetrics":{"FrameTime":0.0001089,"IsRealTime":true,"ThreadId":8}}
+{"Timestamp":"2025-06-05T05:15:28.0036538+02:00","ElapsedTime":1.84E-05,"BallId":56140151,"Position":{"X":148.0001456707242,"Y":314.9985431215386},"Velocity":{"X":0.13488028556456855,"Y":-1.4470613812470192},"RealTimeMetrics":{"FrameTime":1.84E-05,"IsRealTime":true,"ThreadId":14}}
+{"Timestamp":"2025-06-05T05:15:28.0015108+02:00","ElapsedTime":2.02E-05,"BallId":58366981,"Position":{"X":195.9988043931075,"Y":264.9984578801283},"Velocity":{"X":-1.0306954768213474,"Y":-1.4275135160600818},"RealTimeMetrics":{"FrameTime":2.02E-05,"IsRealTime":true,"ThreadId":13}}
+
+...
+
+
+{"Timestamp":"2025-06-05 05:51:22.155","Event":"DeadlineMiss","BallId":24388906,"ActualTime":0.0297195,"Deadline":0.02,"Overrun":0.009719499999999999}
+{"Timestamp":"2025-06-05 05:51:22.155","ElapsedTime":16.8453979,"BallId":24388906,"Position":{"X":283.18308716684453,"Y":246.60921731368305},"Velocity":{"X":-2.0478603094074215,"Y":1.8558804915239078},"RealTimeMetrics":{"FrameTime":16.8453979,"IsRealTime":false,"ThreadId":21}}
+

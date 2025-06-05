@@ -10,6 +10,7 @@
 using System;
 using System.Windows;
 using TP.ConcurrentProgramming.Presentation.ViewModel;
+using TP.ConcurrentProgramming.BusinessLogic;
 
 namespace TP.ConcurrentProgramming.PresentationView
 {
