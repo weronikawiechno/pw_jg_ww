@@ -70,3 +70,21 @@ C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\reactiveinteractiveuserinterface\P
 C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\reactiveinteractiveuserinterface\PresentationModel\obj\Debug\net8.0\refint\TP.ConcurrentProgramming.PresentationModel.dll
 C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\reactiveinteractiveuserinterface\PresentationModel\obj\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.pdb
 C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\reactiveinteractiveuserinterface\PresentationModel\obj\Debug\net8.0\ref\TP.ConcurrentProgramming.PresentationModel.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.deps.json
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.pdb
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\DataLayer.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\TP.ConcurrentProgramming.BusinessLogic.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\TP.ConcurrentProgramming.BusinessLogic.pdb
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\bin\Debug\net8.0\DataLayer.pdb
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.csproj.AssemblyReference.cache
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.AssemblyInfoInputs.cache
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.AssemblyInfo.cs
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.csproj.CoreCompileInputs.cache
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\PresentationModel.sourcelink.json
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\Presenta.2BDC8EB4.Up2Date
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\refint\TP.ConcurrentProgramming.PresentationModel.dll
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\TP.ConcurrentProgramming.PresentationModel.pdb
+C:\Users\vervi\Desktop\4 semestr\współbiegi\tescik\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModel\obj\Debug\net8.0\ref\TP.ConcurrentProgramming.PresentationModel.dll

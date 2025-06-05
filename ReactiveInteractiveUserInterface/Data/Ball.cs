@@ -1,58 +1,36 @@
 ﻿namespace TP.ConcurrentProgramming.Data
 {
-    internal class Ball : IBall
+    public interface IBall
     {
+        IVector GetPosition();
+        void SetPosition(IVector v);
+        IVector Velocity { get; set; }
+        event EventHandler<IVector> NewPositionNotification;
+    }
+
+    public class Ball : IBall
+    {
+        private IVector _position;
+        public IVector Velocity { get; set; }
         public event EventHandler<IVector>? NewPositionNotification;
 
-        public IVector Velocity { get; set; }
-        public double Mass { get; set; } = 1.0;
-        public double Diameter { get; set; } = 30.0;
-
-        private Vector Position;
-
-        internal Ball(Vector initialPosition, Vector initialVelocity)
+        public Ball(IVector position, IVector velocity)
         {
-            Position = initialPosition;
-            Velocity = initialVelocity;
+            _position = position;
+            Velocity = velocity;
         }
 
-        internal void Move()
+        public IVector GetPosition() => _position;
+
+        public void SetPosition(IVector v) => _position = v;
+
+        public void Move()
         {
-            Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
-            NewPositionNotification?.Invoke(this, Position);
-        }
+            
+            _position = new Vector(_position.x + Velocity.x, _position.y + Velocity.y);
 
-        public Vector GetPosition()
-        {
-            return Position;
-        }
-
-        internal void ResolveCollision(Ball other)
-        {
-            Vector delta = new Vector(Position.x - other.Position.x, Position.y - other.Position.y);
-            double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
-
-            if (distance < (this.Diameter + other.Diameter) / 2)
-            {
-                double nx = delta.x / distance;
-                double ny = delta.y / distance;
-
-                Vector dv = new Vector(Velocity.x - other.Velocity.x, Velocity.y - other.Velocity.y);
-                double velocityAlongNormal = dv.x * nx + dv.y * ny;
-
-                if (velocityAlongNormal > 0) return;
-
-                double impulse = (2 * velocityAlongNormal) / (this.Mass + other.Mass);
-                Velocity = new Vector(
-                    Velocity.x - impulse * other.Mass * nx,
-                    Velocity.y - impulse * other.Mass * ny
-                );
-
-                other.Velocity = new Vector(
-                    other.Velocity.x + impulse * this.Mass * nx,
-                    other.Velocity.y + impulse * this.Mass * ny
-                );
-            }
+           
+            NewPositionNotification?.Invoke(this, _position);
         }
     }
 }

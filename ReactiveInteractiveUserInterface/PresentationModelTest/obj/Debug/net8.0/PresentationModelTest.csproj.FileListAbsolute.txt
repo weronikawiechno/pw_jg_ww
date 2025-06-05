@@ -1,0 +1,8 @@
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\bin\Debug\net8.0\.msCoverageSourceRootsMapping_PresentationModelTest
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\bin\Debug\net8.0\CoverletSourceRootsMapping_PresentationModelTest
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.csproj.AssemblyReference.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.AssemblyInfoInputs.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.AssemblyInfo.cs
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.csproj.CoreCompileInputs.cache
+C:\Users\jakgo\Desktop\SEMESTR4\wbud\pw_jg_ww\ReactiveInteractiveUserInterface\PresentationModelTest\obj\Debug\net8.0\PresentationModelTest.sourcelink.json

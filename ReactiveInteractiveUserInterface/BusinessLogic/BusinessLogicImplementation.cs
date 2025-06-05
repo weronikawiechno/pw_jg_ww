@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using TP.ConcurrentProgramming.Data;
+using TP.ConcurrentProgramming.BusinessLogic;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("PresentationView")]
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -20,48 +23,99 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly List<Thread> _threads = new List<Thread>();
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _isRunning = false;
+        private DiagnosticsLogger _logger;
+        private RealTimeManager _realTimeManager; // Dodaj menedżer czasu rzeczywistego
 
         public BusinessLogicImplementation(DataAbstractAPI dataLayer)
         {
             _dataLayer = dataLayer;
+            _logger = new DiagnosticsLogger();
+            _realTimeManager = new RealTimeManager(50.0); // 50 FPS dla symulacji czasu rzeczywistego
         }
 
         public override void Start(int numberOfBalls, Action<IPosition, IBall> handler)
         {
             if (_isRunning) return;
             _isRunning = true;
-            
+
+            _realTimeManager.Start(); // Uruchom timer czasu rzeczywistego
+
+            var balls = new List<Ball>();
+
             _dataLayer.Start(numberOfBalls, (vector, dataBall) =>
             {
-                var businessBall = new BusinessBall(dataBall);
-                
+                Ball ball = new Ball(dataBall);
+                balls.Add(ball);
+
                 IPosition position = new Position(vector.x, vector.y);
-                
-                handler(position, businessBall);
-                
-                var thread = new Thread(() => BallThreadLoop(businessBall, _cts.Token));
+                handler(position, ball);
+
+                var thread = new Thread(() => BallThreadLoop(ball, _cts.Token));
                 _threads.Add(thread);
                 thread.Start();
             });
+
+            foreach (var ball in balls)
+            {
+                ball.SetOtherBalls(balls);
+            }
         }
 
         private void BallThreadLoop(IBall ball, CancellationToken token)
         {
-            Data.IBall dataBall = ((BusinessBall)ball).GetDataBall();
-            
+            Data.IBall dataBall = ((Ball)ball).DataBall;
+            var localTimeManager = new RealTimeManager(50.0);
+            localTimeManager.Start();
+
             while (!token.IsCancellationRequested)
             {
+                localTimeManager.Update();
+                
+                UpdateBallVelocityWithTime(dataBall, localTimeManager.DeltaTime);
+                
                 _dataLayer.MoveBall(dataBall);
                 
-                Thread.Sleep(20);
+                _logger.LogBallState((Ball)ball, localTimeManager.ElapsedTime);
+                
+                if (!localTimeManager.IsDeadlineMet(0.02)) 
+                {
+                    _logger.LogDeadlineMiss((Ball)ball, localTimeManager.DeltaTime, 0.02);
+                }
+                
+                localTimeManager.WaitForNextFrame();
             }
+        }
+
+        // ETAP 3
+        private void UpdateBallVelocityWithTime(Data.IBall dataBall, double deltaTime)
+        {
+            var currentVelocity = dataBall.Velocity;
+
+            var newVelX = currentVelocity.x;
+            var newVelY = currentVelocity.y;
+
+            if (_realTimeManager.ElapsedTime % 2.0 < deltaTime * 2)
+            {
+                newVelX -= 0.1;
+                newVelY -= 0.1;
+            }
+
+            var maxSpeed = 10.0;
+            var currentSpeed = Math.Sqrt(newVelX * newVelX + newVelY * newVelY);
+            if (currentSpeed > maxSpeed)
+            {
+                var scale = maxSpeed / currentSpeed;
+                newVelX *= scale;
+                newVelY *= scale;
+            }
+
+            dataBall.Velocity = new TP.ConcurrentProgramming.Data.Vector(newVelX, newVelY);
         }
 
         public override void Stop()
         {
             _cts.Cancel();
             
-            // Wait for all threads to finish
             foreach (var thread in _threads)
             {
                 thread.Join();
@@ -72,15 +126,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             _cts = new CancellationTokenSource();
             
             _isRunning = false;
-            
-            // Tell the data layer to stop
+
             _dataLayer.Stop();
         }
 
-        // Dispose method
         public override void Dispose()
         {
             Stop();
+            _logger?.Dispose(); // Dispose logger
             _cts.Dispose();
         }
     }
