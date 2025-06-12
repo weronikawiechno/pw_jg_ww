@@ -1,49 +1,52 @@
 using System;
-using System.Diagnostics;
-using System.Threading;
+using System.Timers;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
-    // ETAP 3
     internal class RealTimeManager
     {
-        private readonly Stopwatch _stopwatch = new Stopwatch();
-        private DateTime _lastUpdateTime;
+        private readonly System.Timers.Timer _timer; //Timer
         private double _deltaTime;
+        private double _elapsedTime;
+        private DateTime _lastUpdateTime;
         private readonly double _targetFrameTime;
+        private bool _running = false;
 
         public double DeltaTime => _deltaTime;
-        public double ElapsedTime => _stopwatch.Elapsed.TotalSeconds;
+        public double ElapsedTime => _elapsedTime;
+
+        public event Action? OnFrame;
 
         public RealTimeManager(double targetFPS = 60.0)
         {
             _targetFrameTime = 1.0 / targetFPS;
+            _timer = new System.Timers.Timer(_targetFrameTime * 1000);
+            _timer.Elapsed += TimerElapsed;
+            _timer.AutoReset = true;
         }
 
         public void Start()
         {
-            _stopwatch.Start();
+            if (_running) return;
+            _elapsedTime = 0;
             _lastUpdateTime = DateTime.Now;
+            _timer.Start();
+            _running = true;
         }
 
-        public void Update()
+        public void Stop()
         {
-            var currentTime = DateTime.Now;
-            _deltaTime = (currentTime - _lastUpdateTime).TotalSeconds;
-            _lastUpdateTime = currentTime;
-
-            _deltaTime = Math.Min(_deltaTime, 0.033); 
+            _timer.Stop();
+            _running = false;
         }
 
-        public void WaitForNextFrame()
+        private void TimerElapsed(object? sender, ElapsedEventArgs e)
         {
-            var frameTime = _deltaTime;
-            if (frameTime < _targetFrameTime)
-            {
-                var waitTime = (int)((_targetFrameTime - frameTime) * 1000);
-                if (waitTime > 0)
-                    Thread.Sleep(waitTime);
-            }
+            var now = DateTime.Now;
+            _deltaTime = (now - _lastUpdateTime).TotalSeconds;
+            _lastUpdateTime = now;
+            _elapsedTime += _deltaTime;
+            OnFrame?.Invoke();
         }
 
         public bool IsDeadlineMet(double maxProcessingTime)

@@ -2,7 +2,7 @@
 //
 //  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
 //
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
+//  To be in touch join the community by pressing the Watch button and get started commenting using the discussion panel at
 //
 //  https://github.com/mpostol/TP/discussions/182
 //
@@ -24,13 +24,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _isRunning = false;
         private DiagnosticsLogger _logger;
-        private RealTimeManager _realTimeManager; // Dodaj menedżer czasu rzeczywistego
+        private RealTimeManager _realTimeManager; 
 
         public BusinessLogicImplementation(DataAbstractAPI dataLayer)
         {
             _dataLayer = dataLayer;
             _logger = new DiagnosticsLogger();
-            _realTimeManager = new RealTimeManager(50.0); // 50 FPS dla symulacji czasu rzeczywistego
+            _realTimeManager = new RealTimeManager(50.0); 
         }
 
         public override void Start(int numberOfBalls, Action<IPosition, IBall> handler)
@@ -38,7 +38,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             if (_isRunning) return;
             _isRunning = true;
 
-            _realTimeManager.Start(); // Uruchom timer czasu rzeczywistego
+            _realTimeManager.Start(); // Uruchomienie Timera
 
             var balls = new List<Ball>();
 
@@ -65,24 +65,31 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             Data.IBall dataBall = ((Ball)ball).DataBall;
             var localTimeManager = new RealTimeManager(50.0);
+            double targetFrameTimeMs = 1000.0 / 50.0; // 50 FPS
+
             localTimeManager.Start();
+
+            double lastElapsed = localTimeManager.ElapsedTime;
 
             while (!token.IsCancellationRequested)
             {
-                localTimeManager.Update();
-                
-                UpdateBallVelocityWithTime(dataBall, localTimeManager.DeltaTime);
-                
+                double start = localTimeManager.ElapsedTime;
+
+                double deltaTime = start - lastElapsed;
+                lastElapsed = start;
+
+                UpdateBallVelocityWithTime(dataBall, deltaTime);
+
                 _dataLayer.MoveBall(dataBall);
-                
+
                 _logger.LogBallState((Ball)ball, localTimeManager.ElapsedTime);
-                
-                if (!localTimeManager.IsDeadlineMet(0.02)) 
+
+                if (!localTimeManager.IsDeadlineMet(0.02))
                 {
                     _logger.LogDeadlineMiss((Ball)ball, localTimeManager.DeltaTime, 0.02);
                 }
-                
-                localTimeManager.WaitForNextFrame();
+
+                 Thread.Sleep((int)targetFrameTimeMs);
             }
         }
 
@@ -96,8 +103,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             if (_realTimeManager.ElapsedTime % 2.0 < deltaTime * 2)
             {
-                newVelX -= 0.1;
-                newVelY -= 0.1;
+                newVelX -= 0.7;
+                newVelY -= 0.7;
             }
 
             var maxSpeed = 10.0;
